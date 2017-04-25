@@ -41,12 +41,3 @@ h1, h2, h3, h4 { font-weight: 400; }
   background-color: white !important;
 }
 
-#about {
-position:fixed;
-top: 100px;
-}
-
-.popup {
-  font-size: 16px;
-  font-weight: 600;
-}
