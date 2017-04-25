@@ -13,8 +13,7 @@ pal <- colorNumeric(
   palette = "#FFA500",
   domain = UkrStat$Pop)
 
-contentPopup <- as.character(tagList(
-  tags$b(UkrStat$Region), ":", br(), as.numeric(UkrStat$Pop)))
+
 
 
 ui <- navbarPage(
@@ -44,7 +43,7 @@ server <- function(input, output, session){
   output$CountryMap <- renderLeaflet({
     leaflet() %>% addTiles() %>% addProviderTiles("Esri.WorldStreetMap") %>%
       setView(lng = 31.165580, lat = 48.379433, zoom = 6) %>%
-      addCircles(lng = as.numeric(UkrStat$Longtitude), lat = as.numeric(UkrStat$Latitude), weight = 1, radius = sqrt(UkrStat$Pop)*30, popup = contentPopup, color = "#FFA500", fillOpacity = UkrStat$Opacity) %>%
+      addCircles(lng = as.numeric(UkrStat$Longtitude), lat = as.numeric(UkrStat$Latitude), weight = 1, radius = sqrt(UkrStat$Pop)*30, popup = paste(UkrStat$Region, ": ", UkrStat$Pop), color = "#FFA500", fillOpacity = UkrStat$Opacity) %>%
       addLegend("bottomleft", pal = pal, values = UkrStat$Pop, title = "Population in Regions") %>%
       
       #Easy buttons code
@@ -66,9 +65,9 @@ server <- function(input, output, session){
       leafletProxy("CountryMap") %>% clearShapes() %>% clearPopups()
       index = which(UkrStat$Region == input$region)
       leafletProxy("CountryMap") %>% addCircles(lng = as.numeric(UkrStat$Longtitude[index]), lat = as.numeric(UkrStat$Latitude[index]), weight = 1, radius = sqrt(UkrStat$Pop[index])*30, color = "#FFA500", fillOpacity=0.8) %>%
-        addPopups(lng = as.numeric(UkrStat$Longtitude[index]), lat = as.numeric(UkrStat$Latitude[index]), popup = paste(contentPopup[index]))
+        addPopups(lng = as.numeric(UkrStat$Longtitude[index]), lat = as.numeric(UkrStat$Latitude[index]), popup = paste(UkrStat$Region[index], ": ", UkrStat$Pop[index]))
     } else {
-      leafletProxy("CountryMap") %>% clearMarkers() %>% clearPopups() %>% addCircles(lng = as.numeric(UkrStat$Longtitude), lat = as.numeric(UkrStat$Latitude), weight = 1, radius = sqrt(UkrStat$Pop)*30, popup = contentPopup, color = "#FFA500", fillOpacity = UkrStat$Opacity)
+      leafletProxy("CountryMap") %>% clearMarkers() %>% clearPopups() %>% addCircles(lng = as.numeric(UkrStat$Longtitude), lat = as.numeric(UkrStat$Latitude), weight = 1, radius = sqrt(UkrStat$Pop)*30, popup = paste(UkrStat$Region, ": ", UkrStat$Pop), color = "#FFA500", fillOpacity = UkrStat$Opacity)
     }
   })
   
@@ -78,7 +77,7 @@ server <- function(input, output, session){
   })
   output$MiniMap <- renderLeaflet({
     leaflet() %>% addTiles() %>% addProviderTiles("Esri.WorldStreetMap") %>%
-      setView(lng = 31.165580, lat = 48.379433, zoom = 6) %>% addCircles(lng = as.numeric(UkrStat$Longtitude), lat = as.numeric(UkrStat$Latitude), weight = 1, radius = sqrt(UkrStat$Pop)*30, popup = paste(UkrStat$Region, ", ", UkrStat$Pop), color = "#FFA500", fillOpacity = UkrStat$Opacity)
+      setView(lng = 31.165580, lat = 48.379433, zoom = 7) %>% addCircles(lng = as.numeric(UkrStat$Longtitude), lat = as.numeric(UkrStat$Latitude), weight = 1, radius = sqrt(UkrStat$Pop)*30, popup = paste(UkrStat$Region, ": ", UkrStat$Pop), color = "#FFA500", fillOpacity = UkrStat$Opacity)
   })
 }
 
