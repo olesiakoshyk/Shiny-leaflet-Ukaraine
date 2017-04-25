@@ -1,10 +1,8 @@
 library(shiny)
 library(leaflet)
 library(readxl)
-library(devtools)
 library(shinydashboard)
 library(graphics)
-library(ggplot2)
 library(googleVis)
 
 
